@@ -25,7 +25,7 @@ rownames(ME49_cts) <- ME49_cts[,1]
 ME49_cts <- ME49_cts[,-1]
 ME49_cts <- DESeqDataSetFromMatrix(countData = ME49_cts, colData = ME49_cts, design = ~ Treatment)
 
-RH_cts <- METADATA[1:6,]
+RH_cts <- METADATA[7:12,]
 rownames(RH_cts) <- RH_cts$Sample.Names
 RH_cts$Strain <- factor(RH_cts$Strain)
 RH_cts$Treatment <- factor(RH_cts$Treatment, levels = c('CONTROL','KD'))
