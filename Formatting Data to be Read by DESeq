@@ -1,0 +1,34 @@
+setwd("/Users/olivia/Desktop/Gen811\ Final\ Project")
+
+#if (!require("BiocManager", quietly = TRUE))
+#install.packages("BiocManager")
+#BiocManager::install('DESeq2')
+
+library("BiocManager")
+library ('DESeq2')
+
+ME49_cts <- read.table("GSE217226_ME49_AP2XII-2_RNAseq_counts.tab",sep="\t", header = T)
+RH_cts <- read.table("GSE217226_RH_AP2XII-2_RNAseq_counts.tab",sep="\t", header = T)
+METADATA <- read.table("METADATA.txt",sep="\t", header = T)
+
+rownames(METADATA) <- METADATA$Sample.Names
+METADATA$strain <- factor(METADATA$strain)
+
+colnames(ME49_cts) <- c("X","CON1ME49","CON2ME49","CON3ME49","IAA1ME49","IAA2ME49","IAA3ME49")
+colnames(RH_cts) <- c("X","CON1RH","CON2RH","CON3RH","IAA1RH","IAA2RH","IAA3RH")
+
+ME49_cts <- METADATA[1:6,]
+rownames(ME49_cts) <- ME49_cts$Sample.Names
+ME49_cts$Strain <- factor(ME49_cts$Strain)
+ME49_cts$Treatment <- factor(ME49_cts$Treatment, levels = c('CONTROL','KD'))
+rownames(ME49_cts) <- ME49_cts[,1]
+ME49_cts <- ME49_cts[,-1]
+ME49_cts <- DESeqDataSetFromMatrix(countData = ME49_cts, colData = ME49_cts, design = ~ Treatment)
+
+RH_cts <- METADATA[1:6,]
+rownames(RH_cts) <- RH_cts$Sample.Names
+RH_cts$Strain <- factor(RH_cts$Strain)
+RH_cts$Treatment <- factor(RH_cts$Treatment, levels = c('CONTROL','KD'))
+rownames(RH_cts) <- RH_cts[,1]
+RH_cts <- RH_cts[,-1]
+RH_cts <- DESeqDataSetFromMatrix(countData = RH_cts, colData = RH_cts, design = ~ Treatment)
