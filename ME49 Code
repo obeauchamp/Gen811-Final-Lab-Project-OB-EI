@@ -1,0 +1,36 @@
+Activate R
+
+ setwd("/Users/olivia/Desktop/Gen811\ Final\ Project")
+
+After getting into R, then install
+#if (!require("BiocManager", quietly = TRUE))
+#install.packages("BiocManager")
+#BiocManager::install('DESeq2')
+install.packages("pheatmap")
+library('BiocManager')
+library('DESeq2')
+
+#formatting METADATA table
+METADATA_ME49 <- read.table("METADATA.txt",sep="\t", header = T)
+rownames(METADATA_ME49) <- METADATA_ME49[,1]
+METADATA_ME49 <- METADATA_ME49[,-1]
+
+#formatting ME49_cts to be read by DESeq2
+ME49_cts <- read.table("GSE217226_ME49_AP2XII-2_RNAseq_counts.tab",sep="\t", header = T)
+colnames(ME49_cts) <- c("X","CON1","CON2","CON3","IAA1","IAA2","IAA3")
+rownames(ME49_cts) <- ME49_cts[,1]
+ME49_cts <- ME49_cts[,-1]
+ME49_cts <- DESeqDataSetFromMatrix(countData = ME49_cts, colData = METADATA_ME49, design = ~ Treatment)
+
+#Creating a volcano plot for ME49 RNA Seq data
+ME49_data <- DESeq(ME49_cts)
+ME49_results <- results(ME49_data)
+plotMA(ME49_results)
+
+#creating a heatmap of the top 25 most differentially expressed genes
+library("pheatmap")
+#select <- order(rowMeans(counts(ME49_data,normalized=TRUE)),decreasing=TRUE)[1:20]
+select <- order(ME49_results$pvalue)[1:25]
+df <- as.data.frame(colData(ME49_data)[,c("Treatment")])
+ntd <- normTransform(ME49_data)
+pheatmap(assay(ntd)[select,])
