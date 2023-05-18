@@ -1,1 +1,41 @@
+# setwd("/Users/emilyinnis/Desktop/Gen811/")
 
+# if (!require("BiocManager", quietly = TRUE))
+# install.packages("BiocManager")
+# BiocManager::install('DESeq2')
+
+# library("BiocManager")
+# library ('DESeq2')
+
+# RH_cts <- read.table("GSE217226_RH_AP2XII-2_RNAseq_counts.tab",sep="\t", header = T)
+# METADATA <- read.table("METADATA.txt",sep="\t", header = T)
+
+# rownames(METADATA) <- METADATA$Sample.Names
+# METADATA$Strain <- factor(METADATA$Strain)
+
+# colnames(RH_cts) <- c("X","CON1RH","CON2RH","CON3RH","IAA1RH","IAA2RH","IAA3RH")'
+
+# RH_metadata <- METADATA[7:12,]
+
+# rownames(RH_metadata) <- RH_metadata$Sample.Names
+
+# RH_metadata$Strain <- factor(RH_metadata$Strain)
+
+# RH_metadata$Treatment <- factor(RH_metadata$Treatment, levels = c('CONTROL','KD'))
+
+# rownames(RH_cts) <- RH_cts[,1]
+# RH_cts <- RH_cts[,-1]
+
+# RH_cts <- DESeqDataSetFromMatrix(countData = RH_cts, colData = RH_metadata, design = ~ Treatment)
+# RH_data <- DESeq(RH_cts)
+
+# RH_results <- results(RH_data)
+# plotMA(RH_results)
+# library("pheatmap")
+# select <- order(rowMeans(counts(RH_data,normalized=TRUE)),decreasing=TRUE) [1:20]
+# select <- order(RH_results$pvalue) [1:25]
+# df <- as.data.frame(colData(RH_data) [,c("Treatment")])
+# ntd <- normTransform(RH_data)
+# pheatmap (assay(ntd) [select,])
+
+# plotMA(RH_results)
